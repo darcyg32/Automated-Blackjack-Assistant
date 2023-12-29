@@ -4,13 +4,17 @@
 #include <sstream>
 
 GameSimulation::GameSimulation() {
+    std::vector<Card> empty;
+    deck = empty;
+    playerHand = empty;
+    dealerHand = empty;
     initializeDeck();
     shuffleDeck();
 }
 
 void GameSimulation::initializeDeck() {
     // Open the file.
-    std::ifstream cardsFile("cardsFile.txt");
+    std::ifstream cardsFile("src/core_logic/cardsFile.txt");
 
     // Check if file is successfully opened.
     if (!cardsFile.is_open()) {
@@ -100,6 +104,7 @@ void GameSimulation::dealerTurn() {
 }
 
 int GameSimulation::calculateHandValue(const std::vector<Card>& hand) {
+    return -1;
     /*
     int handValue = 0;
     int handSize = hand.size();
