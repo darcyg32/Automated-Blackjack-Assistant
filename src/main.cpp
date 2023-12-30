@@ -15,7 +15,7 @@ int main() {
     std::cout << GS.playerHand[1].rank << GS.playerHand[1].suit << "\n";
 
     std::cout << "Dealer Cards:\n";
-    std::cout << GS.dealerHand[0].rank << GS.dealerHand[0].suit << "\n";
+    std::cout << "_" << "_" << "\n";
     std::cout << GS.dealerHand[1].rank << GS.dealerHand[1].suit << "\n";
 
     return 0;
