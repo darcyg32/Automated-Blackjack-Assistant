@@ -5,18 +5,11 @@
 
 class GameSimulation {
     private:
-        std::vector<Card> deck;
-        std::vector<Card> playerHand;
-        std::vector<Card> dealerHand;
-
         // Function to initialize the deck
         void initializeDeck();
 
         // Function to shuffle the deck
         void shuffleDeck();
-
-        // Function to deal two cards to each player and dealer
-        void dealCards();
 
         // Function to simulate player's turn
         void playerTurn();
@@ -28,11 +21,18 @@ class GameSimulation {
         int calculateHandValue(const std::vector<Card>& hand);
 
     public:
+        std::vector<Card> deck;
+        std::vector<Card> playerHand;
+        std::vector<Card> dealerHand;
+
         // Constructor
         GameSimulation();
-
+ 
         // Function to simulate the game
         void simulateGame();
+
+        // Function to deal two cards to each player and dealer
+        void dealCards();
 };
 
 #endif

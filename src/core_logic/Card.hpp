@@ -3,33 +3,11 @@
 
 struct Card {
 
-    enum Rank {
-        ACE,
-        TWO,
-        THREE,
-        FOUR,
-        FIVE,
-        SIX,
-        SEVEN,
-        EIGHT,
-        NINE,
-        TEN,
-        JACK,
-        QUEEN,
-        KING
-    };
+    char rank;
+    char suit;
+    int value;
 
-    enum Suit {
-        CLUBS,
-        DIAMONDS,
-        HEARTS,
-        SPADES
-    };
-
-    Rank rank;
-    Suit suit;
-
-    Card(Rank r, Suit s) : rank(r), suit(s) {}
+    Card(char r, char s, int v) : rank(r), suit(s), value(v) {}
 };
 
 #endif

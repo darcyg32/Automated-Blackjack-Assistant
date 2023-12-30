@@ -4,12 +4,19 @@
 
 int main() {
     GameSimulation GS;
-    Card C(Card::ACE, Card::SPADES);
+    GS.dealCards();
 
-    if (C.rank == Card::ACE) {
-        std::cout << "Success 4!\n";
-    } else {
-        std::cout << "Failure!\n";
+    for (int i = 0; i < int(GS.deck.size()); i++) {
+        //std::cout << GS.deck[i].suit << " " << GS.deck[i].rank << " " << GS.deck[i].value << "\n";
     }
-    
+
+    std::cout << "Player Cards:\n";
+    std::cout << GS.playerHand[0].rank << GS.playerHand[0].suit << "\n";
+    std::cout << GS.playerHand[1].rank << GS.playerHand[1].suit << "\n";
+
+    std::cout << "Dealer Cards:\n";
+    std::cout << GS.dealerHand[0].rank << GS.dealerHand[0].suit << "\n";
+    std::cout << GS.dealerHand[1].rank << GS.dealerHand[1].suit << "\n";
+
+    return 0;
 }
