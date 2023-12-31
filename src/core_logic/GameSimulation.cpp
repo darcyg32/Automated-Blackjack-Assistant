@@ -6,61 +6,101 @@
 #include <random>
 
 GameSimulation::GameSimulation() {
-    initializeDeck();
+    
 }
 
-void GameSimulation::initializeDeck() {
+void GameSimulation::initializeShoe(int numDecks) {
+    // Clear shoe
+    shoe.clear();
+
+    // Card data
     std::vector<char> suits = {'C','D','H','S'};
     std::vector<char> ranks = {'A','2','3','4','5','6','7','8','9','T','J','Q','K'};
     std::vector<int> values = {11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
 
-    for (size_t i = 0; i < ranks.size(); i++) {
+    // Add each card to shoe
+    for (int i = 0; i < numDecks; i++) {
         for (size_t j = 0; j < suits.size(); j++) {
-            deck.push_back(Card(ranks[i], suits[j], values[i]));
+            for (size_t k = 0; k < ranks.size(); k++) {
+                shoe.push_back(Card(ranks[k], suits[j], values[k]));
+            }
         }
     }
-
-    // Shuffle deck
-    shuffleDeck();
 }
 
-void GameSimulation::shuffleDeck() {
-    // Randomize order of deck
+void GameSimulation::shuffleShoe() {
+    // Randomize order of shoe
     auto rd = std::random_device {};
     auto rng = std::default_random_engine { rd() };
-    std::shuffle(std::begin(deck), std::end(deck), rng);
+    std::shuffle(std::begin(shoe), std::end(shoe), rng);
 }
 
 void GameSimulation::dealCards() {
+    // Clear hands
+    playerHand.clear();
+    dealerHand.clear();
+
     // Pop off and deal top cards:
-    playerHand.push_back(deck.back());
-    deck.pop_back();
-    dealerHand.push_back(deck.back());
-    deck.pop_back();
-    playerHand.push_back(deck.back());
-    deck.pop_back();
-    dealerHand.push_back(deck.back());
-    deck.pop_back();
+    playerHand.push_back(shoe.back());
+    shoe.pop_back();
+    dealerHand.push_back(shoe.back());
+    shoe.pop_back();
+    playerHand.push_back(shoe.back());
+    shoe.pop_back();
+    dealerHand.push_back(shoe.back());
+    shoe.pop_back();
 }
 
 void GameSimulation::playerTurn() {
-
+    // Hit, stand, double down, etc
 }
 
 void GameSimulation::dealerTurn() {
-
+    // Hit, stand
 }
 
 int GameSimulation::calculateHandValue(const std::vector<Card>& hand) {
-    return -1;
-    /*
-    int handValue = 0;
-    int handSize = hand.size();
-
-    for (int i = 0; i < handSize; i++) {
-        handValue += hand[i].value;
+    // TODO: Implement handling of aces
+    int totalValue = 0;
+    for (size_t i = 0; i < hand.size(); i++) {
+        totalValue += hand[i].value;
     }
+    return totalValue;
+}
 
-    return handValue;
-    */
+void GameSimulation::simulateGame(int numDecks, double shuffleThreshold) {
+    initializeShoe(numDecks);
+    shuffleShoe();
+
+    char entry;
+    std::cout << "Input 'D' to deal new hands: ";
+    std::cin >> entry;
+    while (entry == 'D') {
+        // Check shuffleThreshold
+        if (shoe.size() < shuffleThreshold * numDecks * 52) {
+            std::cout << "Threshold reached. Reshuffling cards.\n";
+            initializeShoe(numDecks);
+            shuffleShoe();
+        }
+
+        dealCards();
+        std::cout << "Player Cards:\n";
+        std::cout << playerHand[0].rank << playerHand[0].suit << "\n";
+        std::cout << playerHand[1].rank << playerHand[1].suit << "\n";
+        std::cout << "Total value: " << calculateHandValue(playerHand);
+        std::cout << "\n";
+
+        std::cout << "Dealer Cards:\n";
+        std::cout << "_" << "_" << "\n";
+        std::cout << dealerHand[1].rank << dealerHand[1].suit << "\n";
+
+        // Player turn
+        
+        // Dealer turn
+
+        // Check win/loss/push conditions
+
+        std::cout << "Input 'D' to deal new hands: ";
+        std::cin >> entry;
+    }
 }

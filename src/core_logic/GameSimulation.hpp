@@ -4,12 +4,12 @@
 #include <vector>
 
 class GameSimulation {
-    private:
+    public:
         // Function to initialize the deck
-        void initializeDeck();
+        void initializeShoe(int numDecks); 
 
         // Function to shuffle the deck
-        void shuffleDeck();
+        void shuffleShoe();
 
         // Function to simulate player's turn
         void playerTurn();
@@ -20,8 +20,7 @@ class GameSimulation {
         // Function to calculate the value of a hand
         int calculateHandValue(const std::vector<Card>& hand);
 
-    public:
-        std::vector<Card> deck;
+        std::vector<Card> shoe;
         std::vector<Card> playerHand;
         std::vector<Card> dealerHand;
 
@@ -29,7 +28,7 @@ class GameSimulation {
         GameSimulation();
  
         // Function to simulate the game
-        void simulateGame();
+        void simulateGame(int numDecks, double shuffleThreshold);
 
         // Function to deal two cards to each player and dealer
         void dealCards();

@@ -4,19 +4,11 @@
 
 int main() {
     GameSimulation GS;
-    GS.dealCards();
+    GS.simulateGame(1, 0.2);
 
-    for (int i = 0; i < int(GS.deck.size()); i++) {
-        //std::cout << GS.deck[i].suit << " " << GS.deck[i].rank << " " << GS.deck[i].value << "\n";
+    for (size_t i = 0; i < GS.shoe.size(); i++) {
+       //std::cout << GS.shoe[i].rank << " " << GS.shoe[i].suit << "\n";
     }
-
-    std::cout << "Player Cards:\n";
-    std::cout << GS.playerHand[0].rank << GS.playerHand[0].suit << "\n";
-    std::cout << GS.playerHand[1].rank << GS.playerHand[1].suit << "\n";
-
-    std::cout << "Dealer Cards:\n";
-    std::cout << "_" << "_" << "\n";
-    std::cout << GS.dealerHand[1].rank << GS.dealerHand[1].suit << "\n";
 
     return 0;
 }
