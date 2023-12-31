@@ -60,11 +60,25 @@ void GameSimulation::dealerTurn() {
 }
 
 int GameSimulation::calculateHandValue(const std::vector<Card>& hand) {
-    // TODO: Implement handling of aces
+
     int totalValue = 0;
+    int numAces = 0;
     for (size_t i = 0; i < hand.size(); i++) {
+        if (hand[i].rank == 'A') {
+            numAces++;
+        }
         totalValue += hand[i].value;
     }
+
+    while (totalValue > 21 && numAces > 0) {
+        totalValue -= 10;
+        numAces -= 1;
+    }
+
+    if (totalValue > 21) {
+        return -1; // Bust
+    }
+    
     return totalValue;
 }
 
@@ -95,7 +109,7 @@ void GameSimulation::simulateGame(int numDecks, double shuffleThreshold) {
         std::cout << dealerHand[1].rank << dealerHand[1].suit << "\n";
 
         // Player turn
-        
+
         // Dealer turn
 
         // Check win/loss/push conditions
