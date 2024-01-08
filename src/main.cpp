@@ -1,18 +1,18 @@
 #include <iostream>
 #include "core_logic/GameSimulation.hpp"
 #include "core_logic/Card.hpp"
+#include "core_logic/Counter.hpp"
 
 int main() {
-    GameSimulation GS;
-    //GS.simulateGame(1, 0.2);
-    GS.playerHand = {Card('K','C', 10), Card('K','C', 10), Card('K','C', 10)};
-    std::cout << GS.calculateHandValue(GS.playerHand) << "\n";
-    GS.playerHand = {Card('A','C', 11), Card('A','C', 11), Card('K','C', 10)};
-    std::cout << GS.calculateHandValue(GS.playerHand) << "\n";
+    Counter C(8);
 
-    for (size_t i = 0; i < GS.shoe.size(); i++) {
-       //std::cout << GS.shoe[i].rank << " " << GS.shoe[i].suit << "\n";
+    std::vector<int> cardsPlayed = {1,6,8,3,7,3,10,10,10,4,2,1,1,6,8,3,7,3,10,10,10,4,2,1,1,6,8,3,7,3,10,10,10,4,2,1,1,6,8,3,7,3,10,10,10,4,2,1,1,6,8,3,7,3,10,10,10,4,2,1};
+    for (size_t i = 0; i < cardsPlayed.size(); i++) {
+        C.updateCounts(cardsPlayed[i]);
     }
+    std::cout << "test\n";
+    std::cout << "Running Count: " << C.getRunningCount() << std::endl;
+    std::cout << "Total Count: " << C.getTotalCount() << std::endl;
 
     return 0;
 }

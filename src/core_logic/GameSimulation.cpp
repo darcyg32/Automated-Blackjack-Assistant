@@ -17,12 +17,13 @@ void GameSimulation::initializeShoe(int numDecks) {
     std::vector<char> suits = {'C','D','H','S'};
     std::vector<char> ranks = {'A','2','3','4','5','6','7','8','9','T','J','Q','K'};
     std::vector<int> values = {11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
+    std::vector<int> hilow_values = {-1, 1, 1, 1, 1, 1, 0, 0, 0, -1, -1, -1, -1};
 
     // Add each card to shoe
     for (int i = 0; i < numDecks; i++) {
         for (size_t j = 0; j < suits.size(); j++) {
             for (size_t k = 0; k < ranks.size(); k++) {
-                shoe.push_back(Card(ranks[k], suits[j], values[k]));
+                shoe.push_back(Card(ranks[k], suits[j], values[k], hilow_values[k]));
             }
         }
     }

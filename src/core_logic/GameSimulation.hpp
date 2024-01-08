@@ -32,6 +32,7 @@ class GameSimulation {
 
         // Function to deal two cards to each player and dealer
         void dealCards();
+
 };
 
 #endif
