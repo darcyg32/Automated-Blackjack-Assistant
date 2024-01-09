@@ -6,7 +6,7 @@ DecisionMaker::DecisionMaker() {
 
 // At the moment, count isn't included
 void DecisionMaker::initStrategyTable() {
-    // https://bitedge.com/blog/when-to-deviate-from-blackjack-basic-strategy/
+    // https://bitedge.com/blog/when-to-deviate-from-blackjack-basic-strategy/ 
     // Hard totals (excluding pairs)
     strategyTable["H_21_2"] = "Stand", strategyTable["H_21_3"] = "Stand", strategyTable["H_21_4"] = "Stand", strategyTable["H_21_5"] = "Stand", strategyTable["H_21_6"] = "Stand", strategyTable["H_21_7"] = "Stand", strategyTable["H_21_8"] = "Stand", strategyTable["H_21_9"] = "Stand", strategyTable["H_21_T"] = "Stand", strategyTable["H_21_A"] = "Stand";
     strategyTable["H_20_2"] = "Stand", strategyTable["H_20_3"] = "Stand", strategyTable["H_20_4"] = "Stand", strategyTable["H_20_5"] = "Stand", strategyTable["H_20_6"] = "Stand", strategyTable["H_20_7"] = "Stand", strategyTable["H_20_8"] = "Stand", strategyTable["H_20_9"] = "Stand", strategyTable["H_20_T"] = "Stand", strategyTable["H_20_A"] = "Stand";
@@ -90,9 +90,42 @@ char DecisionMaker::classifyHand(std::vector<char> hand) {
         return 'P';
     }
 
-    if () {
-        return 'H';
+    int total = 0;
+    int numAces = 0;
+
+    for (char card : hand) {
+        switch (card) {
+            case '2': total += 2; break;
+            case '3': total += 3; break;
+            case '4': total += 4; break;
+            case '5': total += 5; break;
+            case '6': total += 6; break;
+            case '7': total += 7; break;
+            case '8': total += 8; break;
+            case '9': total += 9; break;
+            case 'T': total += 10; break;
+            case 'J': total += 10; break;
+            case 'Q': total += 10; break;
+            case 'K': total += 10; break;
+            case 'A': 
+                total += 11;
+                numAces++;
+                break;
+            default:
+                std::cerr << "Invalid card in hand: " << card << std::endl;
+                return false;
+        }
     }
 
-    return 'S';
+    // Adjust value of aces to 1 if needed to avoid busting
+    while (total > 21 && numAces > 0) {
+        total -= 10;
+        numAces--;
+    }
+
+    if (numAces > 0) {
+        return 'S';
+    } else {
+        return 'H';
+    }
 }

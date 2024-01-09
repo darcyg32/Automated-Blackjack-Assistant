@@ -4,5 +4,8 @@
     - Implement value calculation (including with aces). (DONE)
 
 - Clear unused code
-- Implement classifyHand in DecisionMaker
+- Implement classifyHand in DecisionMaker (DONE)
 - Implement getBestStrat in DecisionMaker
+- Implement deviations in DecisionMaker
+
+- Implement betting recomendations
