@@ -54,63 +54,147 @@ void DecisionMaker::initStrategyTable() {
 }
 
 // Function to return best strategy (optimal for 8 deck shoes)
-std::string DecisionMaker::getBestStrat(std::vector<char> playerHand, char dealerCard) {
+std::string DecisionMaker::getBestStrat(std::vector<char> playerHand, char dealerCard, int count) {
 
-    std::string key = "";
+    // Calculate key based on playerHand and dealerCard
+    std::string key = calculateKey(playerHand, dealerCard);
 
-    // Determine if playerHand is hard, soft, or pair
-    if (classifyHand(playerHand) == 'P') {
-        key.push_back('P');
-        key.push_back('_');
-        key.push_back(playerHand[0]);
-        key.push_back(playerHand[1]);
-        key.push_back('_');
-    } else if (classifyHand(playerHand) == 'H') {
-        key.push_back('H');
-        key.push_back('_');
-        int sum = 0;
-        // Add special card values if needed
-        for (char c : playerHand) {
-            if (c == 'T' || c == 'J' || c == 'Q' || c == 'K') {
-                sum += 10;
-            } else if (c == 'A') {
-                sum += 1;
-            } else {
-                sum += c - '0';
-            }
+    // Check if key and count matches any deviations. Might be a better way than hardcoding the cases in
+    if (key == "H_16_T") {
+        if (count < 0) {
+            return "Hit";
+        } else if (count > 0) {
+            return "Stand";
         }
-        std::string sumString = std::to_string(sum);
-        for (char digit : sumString) {
-            key.push_back(digit);
-        }
-        key.push_back('_');
-    } else {
-        key.push_back('S');
-        key.push_back('_');
-        key.push_back('A');
-
-        // Calc total of hand excluding soft ace (begin at -1)
-        int sum = -1;
-
-        for (char c : playerHand) {
-            if (c == 'A') {
-                sum += 1;
-            } else if (c == 'T' || c == 'J' || c == 'Q' || c == 'K') {
-                sum += 10;
-            } else {
-                sum += c - '0';
-            }
-        }
-        std::string sumString = std::to_string(sum);
-        for (char digit : sumString) {
-            key.push_back(digit);
-        }
-        key.push_back('_');
     }
 
-    key.push_back(dealerCard);
+    if (key == "H_15_T") {
+        if (count < 4) {
+            return "Hit";
+        } else {
+            return "Stand";
+        }
+    }
 
-    std::cout << key << "\n";
+    if (key == "P_TT_5") {
+        if (count < 5) {
+            return "Stand";
+        } else {
+            return "Split";
+        }
+    }
+
+    if (key == "P_TT_6") {
+        if (count < 4) {
+            return "Stand";
+        } else {
+            return "Split";
+        }
+    }
+
+    if (key == "H_T_T") {
+        if (count < 4) {
+            return "Hit";
+        } else {
+            return "Double";
+        }
+    }
+
+    if (key == "H_12_3") {
+        if (count < 2) {
+            return "Hit";
+        } else {
+            return "Stand";
+        }
+    }
+
+    if (key == "H_12_4") {
+        if (count < 3) {
+            return "Hit";
+        } else {
+            return "Stand";
+        }
+    }
+
+    if (key == "H_11_A") {
+        if (count < 1) {
+            return "Hit";
+        } else {
+            return "Double";
+        }
+    }
+
+    if (key == "H_9_2") {
+        if (count < 1) {
+            return "Hit";
+        } else {
+            return "Double";
+        }
+    }
+
+    if (key == "H_10_A") {
+        if (count < 4) {
+            return "Hit";
+        } else {
+            return "Double";
+        }
+    }
+
+    if (key == "H_9_7") {
+        if (count < 3) {
+            return "Hit";
+        } else {
+            return "Double";
+        }
+    }
+
+    if (key == "H_16_9") {
+        if (count < 5) {
+            return "Hit";
+        } else {
+            return "Stand";
+        }
+    }
+
+    if (key == "H_13_2") {
+        if (count < -1) {
+            return "Hit";
+        } else {
+            return "Stand";
+        }
+    }
+
+    if (key == "H_12_4") {
+        if (count < 0) {
+            return "Hit";
+        } else {
+            return "Stand";
+        }
+    }
+
+    if (key == "H_12_5") {
+        if (count < -2) {
+            return "Hit";
+        } else {
+            return "Stand";
+        }
+    }
+
+    if (key == "H_12_6") {
+        if (count < -1) {
+            return "Hit";
+        } else {
+            return "Stand";
+        }
+    }
+
+    if (key == "H_13_3") {
+        if (count < -2) {
+            return "Hit";
+        } else {
+            return "Stand";
+        }
+    }
 
     // Find the iterator associated with the key in the strategyTable
     auto it = strategyTable.find(key);
@@ -170,4 +254,71 @@ char DecisionMaker::classifyHand(std::vector<char> hand) {
     } else {
         return 'H';
     }
+}
+
+// Function to calculate strategyTable key
+std::string DecisionMaker::calculateKey(std::vector<char> playerHand, char dealerCard) {
+    std::string key = "";
+
+    // Determine if playerHand is hard, soft, or pair
+    if (classifyHand(playerHand) == 'P') {
+        key.push_back('P');
+        key.push_back('_');
+        key.push_back(playerHand[0]);
+        key.push_back(playerHand[1]);
+        key.push_back('_');
+    } else if (classifyHand(playerHand) == 'H') {
+        key.push_back('H');
+        key.push_back('_');
+        int sum = 0;
+        // Add special card values if needed
+        for (char c : playerHand) {
+            if (c == 'T' || c == 'J' || c == 'Q' || c == 'K') {
+                sum += 10;
+            } else if (c == 'A') {
+                sum += 1;
+            } else {
+                sum += c - '0';
+            }
+        }
+        if (sum == 10) {
+            key.push_back('T');
+        } else {
+            std::string sumString = std::to_string(sum);
+            for (char digit : sumString) {
+                key.push_back(digit);
+            }
+        }
+        key.push_back('_');
+    } else {
+        key.push_back('S');
+        key.push_back('_');
+        key.push_back('A');
+
+        // Calc total of hand excluding soft ace (begin at -1)
+        int sum = -1;
+
+        for (char c : playerHand) {
+            if (c == 'A') {
+                sum += 1;
+            } else if (c == 'T' || c == 'J' || c == 'Q' || c == 'K') {
+                sum += 10;
+            } else {
+                sum += c - '0';
+            }
+        }
+        if (sum == 10) {
+            key.push_back('T');
+        } else {
+            std::string sumString = std::to_string(sum);
+            for (char digit : sumString) {
+                key.push_back(digit);
+            }
+        }
+        key.push_back('_');
+    }
+
+    key.push_back(dealerCard);
+
+    return key;
 }

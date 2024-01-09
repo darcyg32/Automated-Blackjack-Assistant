@@ -2,7 +2,7 @@
 
 Counter::Counter(int numDecks) {
     runningCount = 0;
-    totalCount = 0;
+    trueCount = 0;
     numDecksInShoe = numDecks;
     numCardPlayed = 0;
 }
@@ -16,15 +16,15 @@ void Counter::updateCounts(char card) {
         runningCount += cardValToCountVal(card - '0');
     }
     numCardPlayed++;
-    totalCount = std::round(runningCount / numDecksInShoe);
+    trueCount = std::round(runningCount / numDecksInShoe);
 }
 
 int Counter::getRunningCount() {
     return runningCount;
 }
 
-int Counter::getTotalCount() {
-    return totalCount;
+int Counter::getTrueCount() {
+    return trueCount;
 }
 
 int Counter::cardValToCountVal(int cardVal) {

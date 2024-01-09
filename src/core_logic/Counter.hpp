@@ -6,7 +6,7 @@
 class Counter {
     private:
         int runningCount;
-        int totalCount;
+        int trueCount;
         int numDecksInShoe;
         int numCardPlayed;
         // Hi-Lo count values
@@ -21,7 +21,7 @@ class Counter {
 
         // Functions to get counts
         int getRunningCount();
-        int getTotalCount();
+        int getTrueCount();
 
         // Function to convert card values into count values
         int cardValToCountVal(int cardVal);

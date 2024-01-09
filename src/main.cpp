@@ -6,9 +6,15 @@
 
 int main() {
     DecisionMaker DM;
+    Counter C(8);
 
-    std::vector<char> playerHand = {'A', 'A', '2'};
+    std::vector<char> playerHand = {'2', '8'};
     char dealerCard = '6';
+
+    for (char c : playerHand) {
+        C.updateCounts(c);
+    }
+    C.updateCounts(dealerCard);
 
     std::cout << "The player has: ";
     for (char card : playerHand) {
@@ -18,7 +24,7 @@ int main() {
 
     std::cout << "The dealer is showing: " << dealerCard << std::endl;
 
-    std::cout << "The best strat is to: " << DM.getBestStrat(playerHand, dealerCard) << std::endl;
+    std::cout << "The best strat is to: " << DM.getBestStrat(playerHand, dealerCard, C.getTrueCount()) << std::endl;
     
 
     return 0;
