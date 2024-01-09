@@ -7,6 +7,8 @@
 
 class DecisionMaker {
     private:
+
+
         // Hashmap to store optimal moves based on hand type, hand, dealer's card, and current total count
         // E.g. "H_17_4_1" means the player has a hard total of 17, the dealer is showing a four, and the count is 1
         std::unordered_map<std::string, std::string> strategyTable;

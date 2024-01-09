@@ -1,7 +1,7 @@
 #include "DecisionMaker.hpp"
 
 DecisionMaker::DecisionMaker() {
-
+    initStrategyTable();
 }
 
 // At the moment, count isn't included
@@ -60,27 +60,69 @@ std::string DecisionMaker::getBestStrat(std::vector<char> playerHand, char deale
 
     // Determine if playerHand is hard, soft, or pair
     if (classifyHand(playerHand) == 'P') {
-        key.push_back('P_');
+        key.push_back('P');
+        key.push_back('_');
         key.push_back(playerHand[0]);
         key.push_back(playerHand[1]);
         key.push_back('_');
     } else if (classifyHand(playerHand) == 'H') {
-        key.push_back('H_');
+        key.push_back('H');
+        key.push_back('_');
         int sum = 0;
+        // Add special card values if needed
         for (char c : playerHand) {
-            sum += c - '0';
+            if (c == 'T' || c == 'J' || c == 'Q' || c == 'K') {
+                sum += 10;
+            } else if (c == 'A') {
+                sum += 1;
+            } else {
+                sum += c - '0';
+            }
         }
-        key += std::to_string(sum); // Double check this works
+        std::string sumString = std::to_string(sum);
+        for (char digit : sumString) {
+            key.push_back(digit);
+        }
         key.push_back('_');
     } else {
-        key.push_back('S_');
-        key.push_back(playerHand[0]);
-        key.push_back(playerHand[1]);
+        key.push_back('S');
+        key.push_back('_');
+        key.push_back('A');
+
+        // Calc total of hand excluding soft ace (begin at -1)
+        int sum = -1;
+
+        for (char c : playerHand) {
+            if (c == 'A') {
+                sum += 1;
+            } else if (c == 'T' || c == 'J' || c == 'Q' || c == 'K') {
+                sum += 10;
+            } else {
+                sum += c - '0';
+            }
+        }
+        std::string sumString = std::to_string(sum);
+        for (char digit : sumString) {
+            key.push_back(digit);
+        }
         key.push_back('_');
     }
+
     key.push_back(dealerCard);
 
-    return strategyTable[key];
+    std::cout << key << "\n";
+
+    // Find the iterator associated with the key in the strategyTable
+    auto it = strategyTable.find(key);
+
+    // Check if the key was found
+    if (it != strategyTable.end()) {
+        // Return the value associated with the key
+        return it->second;
+    } else {
+        // Handle the case where the key was not found (return an appropriate value or throw an exception)
+        return "Key not found"; // Example fallback value
+    }
 
 }
 

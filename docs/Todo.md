@@ -5,7 +5,7 @@
 
 - Clear unused code
 - Implement classifyHand in DecisionMaker (DONE)
-- Implement getBestStrat in DecisionMaker
-- Implement deviations in DecisionMaker
+- Implement getBestStrat basic strategy in DecisionMaker (DONE)
+- Implement getBestStrat deviations in DecisionMaker
 
 - Implement betting recomendations
