@@ -26,10 +26,10 @@ class VideoStream:
     """Camera object"""
     def __init__(self, resolution=(640,480),framerate=30,src=0):
         # Initialize the USB camera and the camera image stream
-        self.stream = cv2.VideoCapture(src)
+        self.stream = cv2.VideoCapture(2)
         ret = self.stream.set(3,resolution[0])
         ret = self.stream.set(4,resolution[1])
-        ret = self.stream.set(5,framerate) #Doesn't seem to do anything so it's commented out
+        ret = self.stream.set(5,framerate)
 
         # Read first frame from the stream
         (self.grabbed, self.frame) = self.stream.read()

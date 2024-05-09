@@ -89,6 +89,12 @@ while cam_quit == 0:
 
                 # Draw center point and match result on the image.
                 image = Cards.draw_results(image, cards[k])
+
+                # Calculate and display the best blackjack move for each card
+                dealer_card = "King"  # Replace with the actual dealer's card
+                cards[k].calculate_blackjack_move(dealer_card)
+                cv2.putText(image, "Blackjack Move: " + cards[k].blackjack_move, (cards[k].contour[0][0][0], cards[k].contour[0][0][1] + 20), font, 0.7, (255, 0, 255), 2, cv2.LINE_AA)
+                
                 k = k + 1
 	    
         # Draw card contours on image (have to do contours all at once or
