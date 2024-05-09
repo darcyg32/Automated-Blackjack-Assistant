@@ -12,3 +12,6 @@
 
 - In DecisionMaker::getBestStrat(), runningCount may need to be used rather than trueCount, don't think so though
     - Also currently assuming that the 18 deviations don't seem to occur on soft hands
+
+- In python code
+    - Card value/rank are not retrieved correctly. (Hand_value with 0 cards is 20? Add a 8, it goes to 22)

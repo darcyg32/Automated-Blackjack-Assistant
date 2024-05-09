@@ -56,17 +56,14 @@ class Query_card:
         self.suit_diff = 0 # Difference between suit image and best matched train suit image
         self.blackjack_move = "" # For getting blackjack move
 
-    def calculate_blackjack_move(self, dealer_card):
-        # TO DO
-        if self.best_rank_match in ['Ten', 'Jack', 'Queen', 'King']:
-            self.blackjack_move = "Stand"
-        elif self.best_rank_match == 'Ace':
-            if dealer_card in ['Ten', 'Jack', 'Queen', 'King', 'Ace']:
-                self.blackjack_move = "Insurance"
-            else:
-                self.blackjack_move = "Hit"
-        else:
-            self.blackjack_move = "Hit"
+    def blackjack_value(self):
+        rank = self.best_rank_match
+        if rank in ['2', '3', '4', '5', '6', '7', '8', '9', '10']:
+            return int(rank)
+        elif rank in ['Jack', 'Queen', 'King']:
+            return 10
+        else:  # Ace
+            return 11
 
 class Train_ranks:
     """Structure to store information about train rank images."""

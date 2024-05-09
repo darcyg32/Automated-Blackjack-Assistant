@@ -53,6 +53,9 @@ cam_quit = 0 # Loop control variable
 # Begin capturing frames
 while cam_quit == 0:
 
+    # Initialize hand value
+    hand_value = 0
+
     # Grab frame from video stream
     image = videostream.read()
 
@@ -87,15 +90,34 @@ while cam_quit == 0:
                 # Find the best rank and suit match for the card.
                 cards[k].best_rank_match,cards[k].best_suit_match,cards[k].rank_diff,cards[k].suit_diff = Cards.match_card(cards[k],train_ranks,train_suits)
 
+                # Calculate the blackjack value of the card and add it to the hand value
+                hand_value += cards[k].blackjack_value()
+
                 # Draw center point and match result on the image.
                 image = Cards.draw_results(image, cards[k])
-
-                # Calculate and display the best blackjack move for each card
-                dealer_card = "King"  # Replace with the actual dealer's card
-                cards[k].calculate_blackjack_move(dealer_card)
-                cv2.putText(image, "Blackjack Move: " + cards[k].blackjack_move, (cards[k].contour[0][0][0], cards[k].contour[0][0][1] + 20), font, 0.7, (255, 0, 255), 2, cv2.LINE_AA)
                 
-                k = k + 1
+                #k = k + 1
+
+        # Calculate the best blackjack move for the entire hand
+        dealer_card = "King"  # Replace with the actual dealer's card
+        if hand_value <= 11:  # Soft hand (contains an Ace)
+            hand_value += 10
+        if hand_value <= 11:  # Still a soft hand (contains another Ace)
+            hand_value += 10
+        if hand_value > 21:
+            blackjack_move = "Bust"
+        elif hand_value >= 17:
+            blackjack_move = "Stand"
+        else:
+            blackjack_move = "Hit"
+
+        # Display the best move for the entire hand
+        text = "Blackjack Move: " + blackjack_move
+        cv2.putText(image, text, (10, 60), font, 0.7, (255, 0, 255), 2, cv2.LINE_AA)
+
+        # Display the best move for the entire hand
+        text = "Hand value: " + str(hand_value)
+        cv2.putText(image, text, (10, 120), font, 0.7, (255, 0, 255), 2, cv2.LINE_AA)
 	    
         # Draw card contours on image (have to do contours all at once or
         # they do not show up properly for some reason)
