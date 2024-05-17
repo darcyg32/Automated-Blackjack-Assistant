@@ -13,6 +13,7 @@ import time
 import os
 import Cards
 import VideoStream
+from DecisionMaker import DecisionMaker
 
 
 ### ---- INITIALIZATION ---- ###
@@ -43,6 +44,8 @@ path = os.path.dirname(os.path.abspath(__file__))
 train_ranks = Cards.load_ranks( path + '/Card_Imgs/')
 train_suits = Cards.load_suits( path + '/Card_Imgs/')
 
+# Init DecisionMaker instance
+decision_maker = DecisionMaker()
 
 ### ---- MAIN LOOP ---- ###
 # The main loop repeatedly grabs frames from the video stream
@@ -53,8 +56,9 @@ cam_quit = 0 # Loop control variable
 # Begin capturing frames
 while cam_quit == 0:
 
-    # Initialize hand value
+    # Initialize hand value and list
     hand_value = 0
+    hand = []
 
     # Grab frame from video stream
     image = videostream.read()
@@ -91,31 +95,27 @@ while cam_quit == 0:
                 cards[k].best_rank_match,cards[k].best_suit_match,cards[k].rank_diff,cards[k].suit_diff = Cards.match_card(cards[k],train_ranks,train_suits)
 
                 # Calculate the blackjack value of the card and add it to the hand value
-                hand_value += cards[k].blackjack_value()
+                card_value = cards[k].blackjack_value()
+                hand_value += card_value
+                hand.append(card_value)
 
                 # Draw center point and match result on the image.
                 image = Cards.draw_results(image, cards[k])
                 
-                #k = k + 1
+                k += 1
 
-        # Calculate the best blackjack move for the entire hand
-        dealer_card = "King"  # Replace with the actual dealer's card
-        if hand_value <= 11:  # Soft hand (contains an Ace)
-            hand_value += 10
-        if hand_value <= 11:  # Still a soft hand (contains another Ace)
-            hand_value += 10
-        if hand_value > 21:
-            blackjack_move = "Bust"
-        elif hand_value >= 17:
-            blackjack_move = "Stand"
-        else:
-            blackjack_move = "Hit"
+        # Determine if hand contains an Ace
+        contains_ace = any(card == 1 for card in hand)
+
+        # Calc the best blackjack move using DecisionMaker
+        dealer_card_value = 10 # Placeholder
+        blackjack_move = decision_maker.get_decision(hand, dealer_card_value)
 
         # Display the best move for the entire hand
         text = "Blackjack Move: " + blackjack_move
         cv2.putText(image, text, (10, 60), font, 0.7, (255, 0, 255), 2, cv2.LINE_AA)
 
-        # Display the best move for the entire hand
+        # Display the hand value of the current hand
         text = "Hand value: " + str(hand_value)
         cv2.putText(image, text, (10, 120), font, 0.7, (255, 0, 255), 2, cv2.LINE_AA)
 	    
